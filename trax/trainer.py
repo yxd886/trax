@@ -29,6 +29,8 @@ from absl import logging
 import gin
 import jax
 import tensorflow.compat.v2 as tf
+import sys
+sys.path.append('../')
 from trax import fastmath
 from trax import trainer_flags  # pylint: disable=unused-import
 from trax.supervised import trainer_lib
