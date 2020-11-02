@@ -446,6 +446,7 @@ class Loop:
       of training and stats, the current optimizer statistics.
     """
     step = self.step
+    print("run to step {}".format(step))
     learning_rate = self._tasks[task_index].learning_rate(step)
     batch = self._tasks[task_index].next_batch()
     rng = self.new_rng()
