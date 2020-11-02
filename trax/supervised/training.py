@@ -60,6 +60,21 @@ from trax.fastmath import numpy as jnp
 from trax.fastmath import random as jax_random
 
 
+import ctypes
+_cudart = ctypes.CDLL('libcudart.so')
+
+def cu_prof_start():
+  ret = _cudart.cudaProfilerStart()
+  if ret != 0:
+    raise Exception('cudaProfilerStart() returned %d' % ret)
+
+
+def cu_prof_stop():
+  ret = _cudart.cudaProfilerStop()
+  if ret != 0:
+    raise Exception('cudaProfilerStop() returned %d' % ret)
+
+
 _Evaluator = collections.namedtuple(
     '_Evaluator', ['weights', 'state', 'metrics_fn']
 )
@@ -447,6 +462,10 @@ class Loop:
     """
     step = self.step
     print("run to step {}".format(step))
+    if step==20:
+      cu_prof_start()
+    if step==90:
+      cu_prof_stop()
     learning_rate = self._tasks[task_index].learning_rate(step)
     batch = self._tasks[task_index].next_batch()
     rng = self.new_rng()
