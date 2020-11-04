@@ -639,9 +639,9 @@ def random_inputs(
       inp = inp.astype(input_dtype)
       out = rand(output_range[0], output_range[1], output_shape)
       out = out.astype(output_dtype)
-      yield inp, out
+      yield inp, out, out.astype(jnp.float32)
 
-  return Inputs(random_minibatches)
+  return Inputs(train_stream=random_minibatches,eval_stream=random_minibatches)
 
 
 def _pad_to_multiple_of(x, y, axis):

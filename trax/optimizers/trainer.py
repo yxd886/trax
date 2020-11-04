@@ -25,7 +25,7 @@ from trax import fastmath
 from trax import layers as tl
 from trax.fastmath import numpy as jnp
 from trax.layers import combinators as cb
-
+import jax
 
 class Trainer(object):
   """Accelerates running an optimizer on a Trax layer returning a scalar loss.
@@ -153,10 +153,16 @@ class Trainer(object):
 def _average_multidevice_gradients(gradients):
   """Averages gradients over all the devices across different hosts."""
   # Sum gradients over all devices across all hosts.
-  gradients = fastmath.psum(gradients, 'batch')
+  leaves, local_treedef = jax.tree_flatten(gradients)
+
+  gradients = [fastmath.psum(dw, 'batch') for dw in leaves]
+
+  #gradients = fastmath.psum(leaves, 'batch')
   # Calculate the total number of devices.
   # Note: the usual n_devices is only the number of devices at this host,
   # here we are calculating the number of all devices across all hosts.
+  gradients = jax.tree_unflatten(local_treedef, gradients)
+
   n_devices_total = fastmath.psum(jnp.array(1.0), 'batch')
   # Average across hosts.
   return fastmath.nested_map(lambda g: g / n_devices_total, gradients)
