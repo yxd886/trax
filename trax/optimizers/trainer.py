@@ -138,7 +138,7 @@ class Trainer(object):
         (weights, self._slots), step, self._opt_params, batch, state, rng)
     end = time.time()
     self.time_count.append(end-start)
-    if len(self.time_count==15):
+    if len(self.time_count)==15:
       print("per-iteration time:",sum(self.time_count)/len(self.time_count))
       self.time_count = []
     if logging.vlog_is_on(1) and ((step & step - 1) == 0):
