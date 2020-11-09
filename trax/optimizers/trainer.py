@@ -48,6 +48,7 @@ class Trainer(object):
     self._loss_layer = loss_layer
     self._optimizer = optimizer
     self._n_devices = n_devices or fastmath.device_count()
+    self.time_count =list()
 
     # optimizer slots and opt_params may need to be replicated
     self._slots, self._opt_params = tl.for_n_devices(
@@ -135,7 +136,11 @@ class Trainer(object):
     start = time.time()
     (new_weights, new_slots), new_state, stats = self._accelerated_update_fn(
         (weights, self._slots), step, self._opt_params, batch, state, rng)
-    print("per-step time: ",time.time()-start)
+    end = time.time()
+    self.time_count.append(end-start)
+    if len(self.time_count==15):
+      print("per-iteration time:",sum(self.time_count)/len(self.time_count))
+      self.time_count = []
     if logging.vlog_is_on(1) and ((step & step - 1) == 0):
       logging.info('updated weights[%s]', new_weights)
       logging.info('stats[%s]', stats)
