@@ -26,6 +26,7 @@ from trax import layers as tl
 from trax.fastmath import numpy as jnp
 from trax.layers import combinators as cb
 import jax
+import time
 
 class Trainer(object):
   """Accelerates running an optimizer on a Trax layer returning a scalar loss.
@@ -131,9 +132,10 @@ class Trainer(object):
       logging.info('state[%s]', state)
 
     # NOTE: stats is a replicated dictionary of key to jnp arrays.
+    start = time.time()
     (new_weights, new_slots), new_state, stats = self._accelerated_update_fn(
         (weights, self._slots), step, self._opt_params, batch, state, rng)
-
+    print("per-step time: ",time.time()-start)
     if logging.vlog_is_on(1) and ((step & step - 1) == 0):
       logging.info('updated weights[%s]', new_weights)
       logging.info('stats[%s]', stats)
