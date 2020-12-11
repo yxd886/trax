@@ -35,10 +35,13 @@ from trax import fastmath
 from trax import trainer_flags  # pylint: disable=unused-import
 from trax.supervised import trainer_lib
 from trax.tf_numpy import numpy as tf_np
+import json
 
 FLAGS = flags.FLAGS
 Backend = fastmath.Backend
 
+
+os.environ["TF_CONFIG"]=json.dumps({"cluster":{"worker":["localhost:2000","localhost:2001"]},"task":{"type":"worker","index":0}})
 
 # TODO(afrozm): Share between trainer.py and rl_trainer.py
 def _tf_setup_from_flags():
