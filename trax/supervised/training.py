@@ -183,6 +183,8 @@ class Loop:
     self._model = model
     self._eval_model = eval_model or model
 
+    self.time_count = []
+
     self._use_memory_efficient_trainer = use_memory_efficient_trainer
     self._loss_chunk_size = loss_chunk_size
     # TODO(lukaszkaiser): can we have different eval models and save memory?
@@ -355,6 +357,8 @@ class Loop:
         self._step += 1
         task_index = self._which_task(self._step)
         task_changed = task_index != prev_task_index
+        start = time.time()
+
         loss, optimizer_metrics = self._run_one_step(task_index, task_changed)
 
         # optimizer_metrics and loss are replicated on self.n_devices, a few
@@ -369,7 +373,11 @@ class Loop:
         optimizer_metrics, loss = fastmath.nested_map(
             functools.partial(tl.mean_or_pmean, self._n_devices),
             (optimizer_metrics, loss))
-
+        end = time.time()
+        self.time_count.append(end - start)
+        if len(self.time_count) == 15:
+          print("per-iteration time:", sum(self.time_count) / len(self.time_count))
+          self.time_count = []
         loss_acc += loss
         step_acc += 1
         for metric_name, value in optimizer_metrics.items():
