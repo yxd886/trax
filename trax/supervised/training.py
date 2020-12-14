@@ -470,7 +470,7 @@ class Loop:
     """
     step = self.step
     print("run to step {}".format(step))
-    if step==20:
+    if step==70:
       cu_prof_start()
     if step==90:
       cu_prof_stop()
