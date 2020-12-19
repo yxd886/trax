@@ -357,7 +357,7 @@ class Loop:
         self._step += 1
         task_index = self._which_task(self._step)
         task_changed = task_index != prev_task_index
-        if self._step==0:
+        if self._step==1:
           proc_num = os.environ["PROC_NUM"]
           folder = os.environ["FOLDER"]
           path = "hlo_module/"+proc_num+"/"+folder+"/per_iteration_time.txt"
