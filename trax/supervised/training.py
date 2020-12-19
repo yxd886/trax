@@ -363,7 +363,7 @@ class Loop:
           path = "hlo_module/"+proc_num+"/"+folder+"/per_iteration_time.txt"
           self._time_path=path
           with open(self._time_path,"w") as f:
-            f.write("per-iteration time/n")
+            f.write("per-iteration time\n")
         start = time.time()
 
         loss, optimizer_metrics = self._run_one_step(task_index, task_changed)
@@ -385,7 +385,7 @@ class Loop:
         if len(self.time_count) == 15:
           print("per-iteration time:", sum(self.time_count) / len(self.time_count))
           with open(self._time_path,"a+") as f:
-            f.write("Time:{}".format(sum(self.time_count) / len(self.time_count)))
+            f.write("Time:{}\n".format(sum(self.time_count) / len(self.time_count)))
           self.time_count = []
         loss_acc += loss
         step_acc += 1
