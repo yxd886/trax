@@ -479,9 +479,9 @@ class Loop:
     """
     step = self.step
     print("run to step {}".format(step))
-    if step==500:
+    if step==100:
       cu_prof_start()
-    if step==520:
+    if step==120:
       cu_prof_stop()
     learning_rate = self._tasks[task_index].learning_rate(step)
     batch = self._tasks[task_index].next_batch()
