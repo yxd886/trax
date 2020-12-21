@@ -362,6 +362,7 @@ class Loop:
           folder = os.environ["FOLDER"]
           path = "hlo_module/"+proc_num+"/"+folder+"/per_iteration_time.txt"
           self._time_path=path
+          self.avg_time = []
           with open(self._time_path,"w") as f:
             f.write("per-iteration time\n")
         start = time.time()
@@ -386,7 +387,11 @@ class Loop:
           print("per-iteration time:", sum(self.time_count) / len(self.time_count))
           with open(self._time_path,"a+") as f:
             f.write("Time:{}\n".format(sum(self.time_count) / len(self.time_count)))
+          self.avg_time.append( sum(self.time_count) / len(self.time_count))
           self.time_count = []
+          if len(self.avg_time)>1:
+            f.write("Avg Time:{}\n".format(sum(self.avg_time[1:]) / (len(self.avg_time)-1)))
+
         loss_acc += loss
         step_acc += 1
         for metric_name, value in optimizer_metrics.items():
