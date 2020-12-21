@@ -390,7 +390,8 @@ class Loop:
           self.avg_time.append( sum(self.time_count) / len(self.time_count))
           self.time_count = []
           if len(self.avg_time)>1:
-            f.write("Avg Time:{}\n".format(sum(self.avg_time[1:]) / (len(self.avg_time)-1)))
+            with open(self._time_path, "a+") as f:
+              f.write("Avg Time:{}\n".format(sum(self.avg_time[1:]) / (len(self.avg_time)-1)))
 
         loss_acc += loss
         step_acc += 1
