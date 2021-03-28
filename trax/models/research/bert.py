@@ -111,7 +111,7 @@ def BERT(d_model=768,
   encoder += [tl.Select([0], n_in=2)]  # Drop the mask
 
   pooler = [
-      tl.Fn('', lambda x: (x[:, 0, :], x[:, 0, :],x[:, 0, :]), n_out=3),
+      tl.Fn('', lambda x: (x[:, 0, :], x[:, 0, 0],x[:, 0, :]), n_out=3),
       tl.Dense(d_model),
       tl.LogSoftmax(),                    # vec_d .....
 
