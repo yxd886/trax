@@ -687,9 +687,9 @@ def bert_sequence_copy_inputs(
       else:
         x = np.concatenate([zero, w, zero, w], axis=1)
       x = _pad_to_multiple_of(x, pad_to_multiple, 1)
-      y = np.random.randint(0, vocab_size, (batch_size,1))
+      y = np.random.randint(0, 10, (batch_size,1))
       loss_weights = _pad_to_multiple_of(loss_weights, pad_to_multiple, 1)
-      yield (x, y, loss_weights)  # Here inputs and targets are the same.
+      yield (x, y, y)  # Here inputs and targets are the same.
 
   return Inputs(
       train_stream=lambda _: random_minibatches(train_length),
