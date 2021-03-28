@@ -60,7 +60,7 @@ Softplus = layer_configure(Softplus)
 L2Loss = layer_configure(L2Loss)
 LSTMCell = layer_configure(LSTMCell)
 GRUCell = layer_configure(GRUCell)
-
+BinaryCrossEntropyLoss = layer_configure(BinaryCrossEntropyLoss)
 BatchNorm = layer_configure(BatchNorm)
 LayerNorm = layer_configure(LayerNorm)
 FilterResponseNorm = layer_configure(FilterResponseNorm)
