@@ -653,6 +653,48 @@ def _pad_to_multiple_of(x, y, axis):
                 constant_values=x.dtype.type(0))
 
 
+@gin.configurable()
+def bert_sequence_copy_inputs(
+    vocab_size=gin.REQUIRED, batch_size=gin.REQUIRED, train_length=gin.REQUIRED,
+    eval_min_length=gin.REQUIRED, eval_max_length=gin.REQUIRED, reverse=False,
+    pad_to_multiple=32):
+  """Inputs for the sequence copy problem: 0w0w for w in [1..vocab_size-1]*.
+
+  Args:
+    vocab_size: how many symbols to use.
+    batch_size: how large are the batches.
+    train_length: maximum length of w for training.
+    eval_min_length: minimum length of w for eval.
+    eval_max_length : maximum length of w for eval.
+    reverse: bool (optional, false by default): reverse the second sequence.
+    pad_to_multiple: int, pad length to be multiple of this number.
+
+  Returns:
+    trax.inputs.Inputs
+  """
+  def random_minibatches(length):
+    """Generate a stream of random mini-batches."""
+    while True:
+      assert length % 2 == 0
+      w_length = (length // 2) - 1
+      w = np.random.randint(low=1, high=vocab_size-1,
+                            size=(batch_size, w_length))
+      zero = np.zeros([batch_size, 1], np.int32)
+      loss_weights = np.concatenate([np.zeros((batch_size, w_length+2)),
+                                     np.ones((batch_size, w_length))], axis=1)
+      if reverse:
+        x = np.concatenate([zero, w, zero, jnp.flip(w, axis=1)], axis=1)
+      else:
+        x = np.concatenate([zero, w, zero, w], axis=1)
+      x = _pad_to_multiple_of(x, pad_to_multiple, 1)
+      y = np.random.randint(0, vocab_size, (batch_size,1))
+      loss_weights = _pad_to_multiple_of(loss_weights, pad_to_multiple, 1)
+      yield (x, y, loss_weights)  # Here inputs and targets are the same.
+
+  return Inputs(
+      train_stream=lambda _: random_minibatches(train_length),
+      eval_stream=lambda _: random_minibatches(eval_max_length)
+  )
 
 @gin.configurable()
 def self_sequence_copy_inputs(
