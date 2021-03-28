@@ -111,17 +111,19 @@ def BERT(d_model=768,
   encoder += [tl.Select([0], n_in=2)]  # Drop the mask
 
   pooler = [
-      tl.Fn('', lambda x: (x[:, 0, :], x), n_out=2),
+      #tl.Fn('', lambda x: (x[:, 0, :], x), n_out=2),
       tl.Dense(d_model),
       tl.Tanh(),
   ]
 
-  init_checkpoint = init_checkpoint if mode == 'train' else None
-  bert = PretrainedBERT(
-      embeddings + encoder + pooler, init_checkpoint=init_checkpoint)
+  #init_checkpoint = init_checkpoint if mode == 'train' else None
+  #bert = PretrainedBERT(
+  #    embeddings + encoder + pooler, init_checkpoint=init_checkpoint)
 
-  if head is not None:
-    bert = tl.Serial(bert, head())
+  #if head is not None:
+  #  bert = tl.Serial(bert, head())
+  layers = embeddings + encoder + pooler
+  bert = tl.Serial(*layers)
 
   return bert
 
