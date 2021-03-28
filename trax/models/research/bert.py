@@ -113,7 +113,8 @@ def BERT(d_model=768,
   pooler = [
       #tl.Fn('', lambda x: (x[:, 0, :], x), n_out=2),
       tl.Dense(d_model),
-      tl.Tanh(),
+      tl.LogSoftmax(),                    # vec_d .....
+
   ]
 
   #init_checkpoint = init_checkpoint if mode == 'train' else None
