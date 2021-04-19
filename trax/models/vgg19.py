@@ -39,7 +39,7 @@ def VGG19(dropout_keep_prob=0.5, n_output_classes=1000, mode='train',
   """
 
   return tl.Serial(
-
+      tl.ToFloat(),
       tl.Conv(64, (3, 3),padding="SAME"),
       tl.Conv(64, (3, 3), padding="SAME"),
       tl.MaxPool(pool_size=(3, 3), strides=(2, 2)),
