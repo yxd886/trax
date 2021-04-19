@@ -20,6 +20,8 @@ from trax.models import atari_cnn
 from trax.models import mlp
 from trax.models import neural_gpu
 from trax.models import resnet
+from trax.models import vgg19
+
 from trax.models import rl
 from trax.models import rnn
 from trax.models import transformer
@@ -58,6 +60,8 @@ ReformerLM = model_configure(reformer.ReformerLM)
 ReformerShortenLM = model_configure(reformer.ReformerShortenLM)
 Reformer2 = model_configure(reformer.Reformer2)
 Resnet50 = model_configure(resnet.Resnet50)
+VGG19 = model_configure(vgg19.VGG19)
+
 ReZeroTransformer = model_configure(
     rezero.ReZeroTransformer)
 ReZeroTransformerDecoder = model_configure(
