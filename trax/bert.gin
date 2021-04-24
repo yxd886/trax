@@ -1,0 +1,9 @@
+train.model=@trax.models.BERT
+train.inputs=@trax.data.inputs.self_sequence_copy_inputs
+train.eval_frequency=1000
+BERT.mode="train"
+self_sequence_copy_inputs.vocab_size=50000
+self_sequence_copy_inputs.batch_size=48
+self_sequence_copy_inputs.train_length=128
+self_sequence_copy_inputs.eval_min_length=128
+self_sequence_copy_inputs.eval_max_length=512

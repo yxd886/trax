@@ -1,0 +1,21 @@
+train.inputs=@trax.data.inputs.self_sequence_copy_inputs
+train.eval_frequency=1000
+self_sequence_copy_inputs.vocab_size=50000
+self_sequence_copy_inputs.batch_size=128
+self_sequence_copy_inputs.train_length=128
+self_sequence_copy_inputs.eval_min_length=256
+self_sequence_copy_inputs.eval_max_length=512
+
+train.eval_steps = 10
+train.model = @trax.models.RNNLM
+train.optimizer = @trax.optimizers.Adam
+train.steps = 500000
+
+# Parameters for RNNLM:
+# ==============================================================================
+RNNLM.rnn_cell = @trax.layers.LSTMCell
+RNNLM.rnn_cell_d_state_multiplier = 2
+RNNLM.d_model = 512
+RNNLM.dropout = 0.1
+RNNLM.n_layers = 2
+RNNLM.vocab_size = 32000

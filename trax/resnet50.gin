@@ -1,0 +1,5 @@
+train.model=@trax.models.Resnet50
+train.inputs=@trax.data.inputs.random_inputs
+train.eval_frequency=1000
+random_inputs.input_shape=(32,224,224,3)
+random_inputs.output_shape=(32,1)
