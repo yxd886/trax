@@ -4,10 +4,10 @@ export FOLDER="transformer_op_fusion_level_"$OP_FUSION"_tensor_fusion_threshold_
 GIN_FILE=transformer.gin
 export PROC_ID=0
 export PROC_NUM=6
-export CUDA_VISIBLE_DEVICES=0,1
+export CUDA_VISIBLE_DEVICES=0,1,2,3
 export TF_XLA_FLAGS="--tf_xla_max_cluster_size=1000000000 --tf_xla_auto_jit=2"
-#export XLA_FLAGS="--xla_hlo_profile --xla_dump_to=hlo_module/$PROC_NUM/$FOLDER --xla_dump_hlo_as_proto --xla_dump_hlo_pass_re="all_reduce_combiner"" 
-export XLA_FLAGS="--xla_dump_to=hlo_module/$PROC_NUM/$FOLDER --xla_dump_hlo_as_proto --xla_dump_hlo_pass_re="all_reduce_combiner"" 
+export XLA_FLAGS="--xla_hlo_profile --xla_dump_to=hlo_module/$PROC_NUM/$FOLDER --xla_dump_hlo_as_proto --xla_dump_hlo_pass_re="all_reduce_combiner"" 
+#export XLA_FLAGS="--xla_dump_to=hlo_module/$PROC_NUM/$FOLDER --xla_dump_hlo_as_proto --xla_dump_hlo_pass_re="all_reduce_combiner"" 
 export TF_CPP_MIN_LOG_LEVEL=0
 export TF_CPP_MIN_VLOG_LEVEL=0
 #export TF_CPP_VMODULE="nccl_all_reduce_thunk=5"
